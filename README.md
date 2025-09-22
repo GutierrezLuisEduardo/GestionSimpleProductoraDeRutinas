@@ -37,18 +37,16 @@ El código define tres clases que representan las entidades principales. Cada un
      - `addRutina(Rutina* r)`: Agrega un puntero a una rutina al vector.
      - `addNetwork(const string& netId)`: Agrega un ID de network al vector.
    - **Método mostrar()**: Imprime ID, nombre, alcance, número de rutinas y número de networks.
-   - **Cómo funciona**: Esta clase es central. Los punteros a Rutina permiten referencias sin copiar objetos (eficiente en memoria), pero requieren que las Rutinas existan durante la vida del Creador (lo que se asegura al cargar rutinas primero). No hay borrado de elementos, solo adición.
 
 3. **Clase Network**:
    - **Atributos**:
-     - `idNetwork`: String único (ej: "N001").
-     - `tematica`: String con la temática (ej: "Fitness").
+     - `idNetwork`: String único.
+     - `tematica`: String con la temática.
      - `creadores`: Vector de strings con IDs de creadores asociados.
    - **Constructor**: Inicializa id y tematica; vector vacío.
    - **Getters**: Incluye `getNumCreadores()` para el tamaño del vector.
    - **Método addCreador(const string& id)`: Agrega un ID de creador al vector.
    - **Método mostrar()**: Imprime ID, temática y número de creadores.
-   - **Cómo funciona**: Similar a Creador, pero inversa: una network agrupa creadores. La asociación es bidireccional durante la carga (un creador agrega network, y la network agrega al creador).
 
 # Carga de Archivos (Parsing de CSV)
 Estas funciones leen archivos CSV y crean objetos. Asumen formato estricto.
@@ -82,7 +80,7 @@ Muestra en CLi las opciones del menú y requiere una selección. También se ini
     - Memoria: los vectores se liberan al terminar la ejecución
 
 
-# Análisis de complejidad
+# Análisis de complejidad del algoritmo de ordenamiento
 El algoritmo `std::sort` implementa _Introsort_, una estrategia híbrida basada en división y conquista. Comienza utilizando _Quicksort_, que en promedio logra una complejidad de `O(N·log(N))`, pero que en su peor escenario puede degradarse a `O(N²)`.
 
 Para evitarlo, _Introsort_ combina _Quicksort_ con _Heapsort_, garantizando en todos los casos un rendimiento de `O(N·log(N))`, y utiliza _Insertion Sort_ en subconjuntos pequeños para optimizar la eficiencia práctica.
@@ -90,6 +88,8 @@ Para evitarlo, _Introsort_ combina _Quicksort_ con _Heapsort_, garantizando en t
 Cabe mencionar que la complejidad se mide principalmente en el número de comparaciones. Con comparadores simples (como `<` o `std::less{}`), el costo de cada comparación es constante, por lo que se mantiene estrictamente en `O(N·log(N))`. En el caso de comparadores personalizados (como las lambdas que usé), la complejidad sigue siendo la misma TODA VEZ que tienen complejidad `O(1)`, pues únicamente acceden a un atributo y hacen una comparación con `>`.
 
 Finalmente, desde mi opinión y en el contexto de este proyecto, donde los conjuntos de datos no son masivos, la implementación hecha de `std::sort` resulta ser una elección óptima al ofrecer un balance ideal entre eficiencia y desempeño.
+
+Tal es así que para los 12 Creadores introducidos, la cantidad de comparaciones se ve representada por `O(12·log(12))≈43`.
 
 # Explicación de consecución de competencias
 > SICT0301 - Evalúa los componentes: Hace un análisis de complejidad correcto y completo para los algoritmos de ordenamiento usados en el programa.
