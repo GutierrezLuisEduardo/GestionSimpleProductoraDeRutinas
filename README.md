@@ -94,11 +94,11 @@ Finalmente, desde mi opinión y en el contexto de este proyecto, donde los conju
 # Explicación de consecución de competencias
 > SICT0301 - Evalúa los componentes: Hace un análisis de complejidad correcto y completo para los algoritmos de ordenamiento usados en el programa.
 
-Evalué los componentes e hice un análisis de complejidad para la implementación de los algoritmos del programa al indagar sobre std::sort, comprenderlo y finalmente implementarlo de manera que, pese a utilizar un comparador distinto de `<`/`std::less{}` (los lambdas), me aseguré de que no estropearan la complejidad de `O(N·log(N))`.
+Evalué los componentes e hice un análisis de complejidad para la implementación de los algoritmos del programa al indagar sobre std::sort, comprenderlo y finalmente implementarlo de manera que, pese a utilizar un comparador distinto de `<`/`std::less{}` (los lambdas), me aseguré de que no estropearan la complejidad de `O(N·log(N))`. Interpreté además la complejidad que supuso la incorporación de estas funciones lambda.
 
 > SICT0302 - Toma decisiones: Selecciona un algoritmo de ordenamiento adecuado al problema y lo usa correctamente.
 
-Justifiqué por qué el algoritmo, que implementé sin contratiempos en el código, es adecuado al problema.
+Evalué inicialmente si implementar un sort propio o utilizar el mencionado en clases: std::sort y las ventajas/desventajas que eso implicaba en términos de eficacia y optimización. Justifiqué también por qué el algoritmo, que implementé sin complicaciones en el código, es adecuado para el problema.
 
 # Referencias:
 - Llamas, L. (2024, 21 noviembre). Qué son y cómo usar las funciones lambda en C++. Luis Llamas. https://www.luisllamas.es/cpp-funciones-lambda/
