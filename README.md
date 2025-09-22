@@ -81,6 +81,25 @@ Muestra en CLi las opciones del menú y requiere una selección. También se ini
     - **USA `cin` PARA INPUT**
     - Memoria: los vectores se liberan al terminar la ejecución
 
+
+# Análisis de complejidad
+El algoritmo `std::sort` implementa _Introsort_, una estrategia híbrida basada en división y conquista. Comienza utilizando _Quicksort_, que en promedio logra una complejidad de `O(N·log(N))`, pero que en su peor escenario puede degradarse a `O(N²)`.
+
+Para evitarlo, _Introsort_ combina _Quicksort_ con _Heapsort_, garantizando en todos los casos un rendimiento de `O(N·log(N))`, y utiliza _Insertion Sort_ en subconjuntos pequeños para optimizar la eficiencia práctica.
+
+Cbe mencionar que la complejidad se mide principalmente en el número de comparaciones. Con comparadores simples (como `<` o `std::less{}`), el costo de cada comparación es constante, por lo que se mantiene estrictamente en `O(N·log(N))`. En el caso de comparadores personalizados (como las lambdas que usé), la complejidad sigue siendo la misma TODA VEZ que tienen complejidad `O(1)`, pues únicamente acceden a un atributo y hacen una comparación con `>`.
+
+Finalmente, desde mi opinión y en el contexto de este proyecto, donde los conjuntos de datos no son masivos, la implementación hecha de `std::sort` resulta ser una elección óptima al ofrecer un balance ideal entre eficiencia y desempeño.
+
+# Explicación de consecución de competencias
+> SICT0301 - Evalúa los componentes: Hace un análisis de complejidad correcto y completo para los algoritmos de ordenamiento usados en el programa.
+
+Evalué los componentes e hice un análisis de complejidad para la implementación de los algoritmos del programa.
+
+> SICT0302 - Toma decisiones: Selecciona un algoritmo de ordenamiento adecuado al problema y lo usa correctamente.
+
+Justifiqué por qué el algoritmo, que implementé sin contratiempos en el código, es adecuado al problema.
+
 # Referencias:
 - Llamas, L. (2024, 21 noviembre). Qué son y cómo usar las funciones lambda en C++. Luis Llamas. https://www.luisllamas.es/cpp-funciones-lambda/
 - std::sort - cppreference.com. (s. f.). https://en.cppreference.com/w/cpp/algorithm/sort.html
