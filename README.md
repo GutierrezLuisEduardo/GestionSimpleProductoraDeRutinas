@@ -5,3 +5,4 @@ Programa simple que representa la gestión de información (rutinas, networks, c
 
 # Referencias:
 Llamas, L. (2024, 21 noviembre). Qué son y cómo usar las funciones lambda en C++. Luis Llamas. https://www.luisllamas.es/cpp-funciones-lambda/
+std::sort - cppreference.com. (s. f.). https://en.cppreference.com/w/cpp/algorithm/sort.html
