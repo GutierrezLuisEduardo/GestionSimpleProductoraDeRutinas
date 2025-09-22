@@ -94,7 +94,7 @@ Finalmente, desde mi opinión y en el contexto de este proyecto, donde los conju
 # Explicación de consecución de competencias
 > SICT0301 - Evalúa los componentes: Hace un análisis de complejidad correcto y completo para los algoritmos de ordenamiento usados en el programa.
 
-Evalué los componentes e hice un análisis de complejidad para la implementación de los algoritmos del programa.
+Evalué los componentes e hice un análisis de complejidad para la implementación de los algoritmos del programa al indagar sobre std::sort, comprenderlo y finalmente implementarlo de manera que, pese a utilizar un comparador distinto de `<`/`std::less{}` (los lambdas), me aseguré de que no estropearan la complejidad de `O(N·log(N))`.
 
 > SICT0302 - Toma decisiones: Selecciona un algoritmo de ordenamiento adecuado al problema y lo usa correctamente.
 
