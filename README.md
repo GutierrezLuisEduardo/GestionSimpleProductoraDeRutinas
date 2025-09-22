@@ -87,7 +87,7 @@ El algoritmo `std::sort` implementa _Introsort_, una estrategia híbrida basada 
 
 Para evitarlo, _Introsort_ combina _Quicksort_ con _Heapsort_, garantizando en todos los casos un rendimiento de `O(N·log(N))`, y utiliza _Insertion Sort_ en subconjuntos pequeños para optimizar la eficiencia práctica.
 
-Cbe mencionar que la complejidad se mide principalmente en el número de comparaciones. Con comparadores simples (como `<` o `std::less{}`), el costo de cada comparación es constante, por lo que se mantiene estrictamente en `O(N·log(N))`. En el caso de comparadores personalizados (como las lambdas que usé), la complejidad sigue siendo la misma TODA VEZ que tienen complejidad `O(1)`, pues únicamente acceden a un atributo y hacen una comparación con `>`.
+Cabe mencionar que la complejidad se mide principalmente en el número de comparaciones. Con comparadores simples (como `<` o `std::less{}`), el costo de cada comparación es constante, por lo que se mantiene estrictamente en `O(N·log(N))`. En el caso de comparadores personalizados (como las lambdas que usé), la complejidad sigue siendo la misma TODA VEZ que tienen complejidad `O(1)`, pues únicamente acceden a un atributo y hacen una comparación con `>`.
 
 Finalmente, desde mi opinión y en el contexto de este proyecto, donde los conjuntos de datos no son masivos, la implementación hecha de `std::sort` resulta ser una elección óptima al ofrecer un balance ideal entre eficiencia y desempeño.
 
