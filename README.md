@@ -101,6 +101,8 @@ Evalué los componentes e hice un análisis de complejidad para la implementaci�
 
 | Operación principal | Complejidad promedio | Justificación |
 |-|-|-|
+| Inserciones al final (emplace_back) | O(1) | Perfecto para lectura de CSV |
+| Acceso por índice/iterador | O(1) | Ideal para recorrer o imprimir |
 | Ordenamiento (`std::sort`) | O(N·log(N)) |
 | Consulta (`mostrar`) | O(1) por elemento    | Acceso directo a atributos |
 
