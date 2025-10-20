@@ -9,7 +9,7 @@ El programa carga datos desde archivos CSV (rutinas.csv, creadores.csv y network
 
 2. Permite seleccionar (a través de cin) el orden de la vista de creadores, según los siguientes criterios: 1. Nombre (ascendente, a.getNombre() < b.getNombre()), 2. Alcance en miles (descendente, a.getAlcance() > b.getAlcance()), 3. Rutinas (descendente, a.getNumRutinas() > b.getNumRutinas()); usa std:sort, que requiere de un comparador que en este caso son lambdas.
 
-3. Parsea tres archivos csv (rutinas, creadores, networks.csv) e instancia las entidades modeladas a partir de ello. Y finalmente dispone un menú que permite ver la información de las entidades: rutinas, networks y creadores, para estos últmos permite
+3. Parsea tres archivos csv (rutinas, creadores, networks.csv) e instancia las entidades modeladas a partir de ello. Y finalmente dispone un menú que permite ver la información de las entidades: rutinas, networks y creadores, para estos últimos permite seleccionar distintos criterios de sorting.
 
 ### Clases Principales
 El código define tres clases que representan las entidades principales. Cada una tiene atributos privados, un constructor, getters y un método `mostrar()` para imprimir información en CLi.
@@ -49,11 +49,11 @@ El código define tres clases que representan las entidades principales. Cada un
    - **Método mostrar()**: Imprime ID, temática y número de creadores.
 
 # Carga de Archivos (Parsing de CSV)
-Estas funciones leen archivos CSV y crean objetos. Asumen formato estricto.
-**Orden de campos**: Asumen CSV apegado a formato rígido.
-- **void cargarRutinas(const string& archivo, vector<Rutina>& rutinas)**:
-- **void cargarNetworks(const string& archivo, vector<Network>& networks)**:
-- **void cargarCreadores(const string& archivo, vector<Creador>& creadores, vector<Rutina>& rutinas, vector<Network>& networks)**:
+Estas funciones leen archivos CSV y crean objetos. Asumen un formato estricto en el CSV.
+- **void cargarRutinas()**: Tipo, Público meta, ID de Rutina,Longitud del ciclo de producción en cantidad de semanas
+- **void cargarNetworks()**: ID de Network, Temática, Descripción breve, Creadores
+- **void cargarCreadores()**: Nombre, ID de creador, Alcance, Rutinas, Networks
+
 
 # Menú Principal y Programa Principal (main)
 Muestra en CLi las opciones del menú y requiere una selección. También se inicialiizan los vectores (Pto. de entrada).
@@ -92,15 +92,33 @@ Finalmente, desde mi opinión y en el contexto de este proyecto, donde los conju
 Tal es así que para los 12 Creadores introducidos, la cantidad de comparaciones se ve representada por `O(12·log(12))≈43`.
 
 # Explicación de consecución de competencias
-> SICT0301 - Evalúa los componentes: Hace un análisis de complejidad correcto y completo para los algoritmos de ordenamiento usados en el programa.
+## SICT0301
+> *Evalúa los componentes: Hace un análisis de complejidad correcto y completo para los algoritmos de ordenamiento usados en el programa.*
 
 Evalué los componentes e hice un análisis de complejidad para la implementación de los algoritmos del programa al indagar sobre std::sort, comprenderlo y finalmente implementarlo de manera que, pese a utilizar un comparador distinto de `<`/`std::less{}` (los lambdas), me aseguré de que no estropearan la complejidad de `O(N·log(N))`. Interpreté además la complejidad que supuso la incorporación de estas funciones lambda.
 
-> SICT0302 - Toma decisiones: Selecciona un algoritmo de ordenamiento adecuado al problema y lo usa correctamente.
+> *Hace un análisis de complejidad correcto y completo todas las estructuras de datos y cada uno de sus usos en el programa*
 
-Evalué inicialmente si implementar un sort propio o utilizar el mencionado en clases: std::sort y las ventajas/desventajas que eso implicaba en términos de eficacia y optimización. Justifiqué también por qué el algoritmo, que implementé sin complicaciones en el código, es adecuado para el problema.
+| Operación principal | Complejidad promedio | Justificación |
+|-|-|-|
+| Ordenamiento (`std::sort`) | O(N·log(N)) |
+| Consulta (`mostrar`) | O(1) por elemento    | Acceso directo a atributos |
+
+## SICT0302
+> *Toma decisiones: Selecciona un algoritmo de ordenamiento adecuado al problema y lo usa correctamente.*
+
+Evalué inicialmente si implementar un sort propio o utilizar el mencionado en clases: `std::sort` y las ventajas/desventajas que eso implicaba en términos de eficacia y optimización. Justifiqué también por qué el algoritmo, que implementé sin complicaciones en el código, es adecuado para el problema.
+
+> *Selecciona una estructura de datos adecuada al problema y lo usa correctamente.*
+
+Empleé `std::vector` para cargar las colecciones de objetos "Rutina", "Creador", "Network".
+
+Esta estructura ofrece almacenamiento contiguo en memoria, redimensionamiento automático y es compatible con el algoritmo que utilicé.
+
+Es útil para **recorrer completamente colecciones pequeñas y medianas** de las entidades (como es el caso), hacer ordenamientos específicos,  y realizar búsquedas simples y **mantener complejidades dentro de los rangos esperados**.
 
 # Referencias:
 - Llamas, L. (2024, 21 noviembre). Qué son y cómo usar las funciones lambda en C++. Luis Llamas. https://www.luisllamas.es/cpp-funciones-lambda/
 - std::sort - cppreference.com. (s. f.). https://en.cppreference.com/w/cpp/algorithm/sort.html
 - GeeksforGeeks. (2025, 21 agosto). std::find_if , std::find_if_not in C++. GeeksforGeeks. https://www.geeksforgeeks.org/cpp/stdfind_if-stdfind_if_not-in-c/
+- std::vector - cppreference.com. (s. f.). https://en.cppreference.com/w/cpp/container/vector.html
