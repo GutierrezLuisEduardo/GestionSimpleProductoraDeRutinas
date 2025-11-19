@@ -92,3 +92,6 @@ En el programa se utilizan tres ordenamientos con `std::sort` sobre vectores de 
   - std::sort - cppreference.com. (s. f.). https://en.cppreference.com/w/cpp/algorithm/sort.html
   - GeeksforGeeks. (2025, 21 agosto). std::find_if , std::find_if_not in C++. GeeksforGeeks. https://www.geeksforgeeks.org/cpp/stdfind_if-stdfind_if_not-in-c/
   - std::vector - cppreference.com. (s. f.). https://en.cppreference.com/w/cpp/container/vector.html
+  - GeeksforGeeks. (2025a, julio 23). Unordered Map in C++ STL. GeeksforGeeks. https://www.geeksforgeeks.org/cpp/unordered_map-in-cpp-stl/
+  - std::unordered_set - cppreference.com. (s. f.). https://en.cppreference.com/w/cpp/container/unordered_set.html
+  - GeeksforGeeks. (2025, 30 septiembre). Queue in C++ STL. GeeksforGeeks. https://www.geeksforgeeks.org/cpp/queue-cpp-stl/
