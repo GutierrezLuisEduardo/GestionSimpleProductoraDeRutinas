@@ -1,5 +1,5 @@
-ID de Network,Temática,Descripción breve,Creadores
-N01A,Misterio,"Contenido sobre fenómenos inexplicables y teorías",C01A;C02B;C03C
+id,tematica,descripcion,creadores
+N01A,Misterio,"Contenido sobre fenómenos inexplicables y teorías",C01A;C02B;C03C;C0LG;C0UG
 N02B,Paranormal,"Investigaciones sobre eventos paranormales y espíritus",C04D;C05E;C06F
-N03C,Noticias,"Actualizaciones diarias sobre sucesos globales",C07G;C08H;C09I
 N04D,Música,"Canal dedicado a análisis de géneros musicales",C10J;C11K;C12L
+N03C,Noticias,"Actualizaciones diarias sobre sucesos globales",C07G;C08H;C09I

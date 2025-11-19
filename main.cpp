@@ -1,177 +1,167 @@
 #include <iostream>
-#include <fstream>
-#include <sstream>
 #include <string>
-#include <vector>
-#include <algorithm>
-#include "Rutina.h"
-#include "Creador.h"
-#include "Network.h"
+#include "grafo.h"
+#include "gestor.h"
 
 using namespace std;
 
-// Divide cadenas usando un separador
-vector<string> split(const string& linea, char sep) {
-    vector<string> partes;
-    string parte;
-    stringstream ss(linea);
-    while (getline(ss, parte, sep)) { // Mientras haya partes
-        // Si no está vacío, añade al vector
-        if (!parte.empty()) partes.push_back(parte);
-    }
-    return partes;
-}
-
-// Carga de Rutinas
-void cargarRutinas(const string& archivo, vector<Rutina>& rutinas) {
-    ifstream file(archivo);
-    string linea;
-    getline(file, linea); // Omite encabezado
-    while (getline(file, linea)) { // Mientras haya lineas
-        vector<string> campos = split(linea, ',');
-        if (campos.size() >= 4) {
-            // Genera la rutina dentro del vector, a diferencia de push_back
-            rutinas.emplace_back(campos[2], campos[0], campos[1], stoi(campos[3]));
-        }
-    }
-}
-
-// Carga de Creadores
-void cargarCreadores(const string& archivo, vector<Creador>& creadores,
-                     vector<Rutina>& rutinas, vector<Network>& networks) {
-    ifstream file(archivo);
-    string linea;
-    getline(file, linea); // Omite encabezado
-    while (getline(file, linea)) { // Mientras haya lineas
-        vector<string> campos = split(linea, ',');
-        if (campos.size() >= 5) {
-            string nombre = campos[0];
-            string id = campos[1];
-            string alcance = campos[2];
-            string rutinasStr = campos[3];
-            string networksStr = campos[4];
-
-            Creador creador(nombre, id, alcance);
-
-            // Rutinas y Networks asociadas (separadas por ;)
-            vector<string> rutinasIds = split(rutinasStr, ';');
-            for (auto& rId : rutinasIds) { // iterando sobre ids de rutinas
-                // Buscando entre las rutinas al que cumplla con la condición
-                auto it = find_if(rutinas.begin(), rutinas.end(),
-                    // lambda de condición    
-                    [&](Rutina& r){
-                        // c/vez que el identificador actual coincida con el de rutina
-                        return r.getIdRutina() == rId; });
-                // Verificar si existra la rutina
-                if (it != rutinas.end()) {
-                    creador.addRutina(&(*it));
-                }
-            }
-
-            vector<string> networksIds = split(networksStr, ';');
-            for (auto& netId : networksIds) {
-                creador.addNetwork(netId);
-                auto it = find_if(networks.begin(), networks.end(),
-                                  [&](Network& n){ return n.getIdNetwork() == netId; });
-                if (it != networks.end()) {
-                    it->addCreador(id);
-                }
-            }
-
-            creadores.push_back(creador);
-        }
-    }
-}
-
-// Carga de Networks
-void cargarNetworks(const string& archivo, vector<Network>& networks) {
-    ifstream file(archivo);
-    string linea;
-    getline(file, linea);
-    while (getline(file, linea)) {
-        vector<string> campos = split(linea, ',');
-        if (campos.size() >= 2) {
-            // Crea la network dentro del vector, a dif. de push_back
-            networks.emplace_back(campos[0], campos[1]);
-        }
-    }
-}
-
-// Selección de tipo de orden a mostrar para info del Creador
-void ordenarCreadores(vector<Creador>& creadores) {
-    cout << "Ordenar creadores por: \n1. Nombre\n2. Alcance (en miles)\n3. Rutinas\n";
-    int op; cin >> op;
-
-    /* funciones lambda usadas como comparador p/sorts
-     [capturas]: vacío en estos casos
-     (parámetros): referencias a creadores
-     {cuerpo de función}: comparaciones
-    */
-    switch(op) {
-        case 1:
-            sort(creadores.begin(), creadores.end(),
-                [](const Creador& a, const Creador& b) {
-                    return a.getNombre() < b.getNombre();
-                });
-            break;
-        case 2:
-            sort(creadores.begin(), creadores.end(),
-                [](const Creador& a, const Creador& b) {
-                    return a.getAlcance() > b.getAlcance();
-                });
-            break;
-        case 3:
-            sort(creadores.begin(), creadores.end(),
-                [](const Creador& a, const Creador& b) {
-                    return a.getNumRutinas() > b.getNumRutinas();
-                });
-            break;
-    }
-}
-
-// Menú principal
+// === MENÚ INTERACTIVO ===
 void mostrarMenu() {
-    cout << "\n===== MENÚ PRINCIPAL =====" << endl;
-    cout << "1. Ver Creadores" << endl;
-    cout << "2. Ver Rutinas" << endl;
-    cout << "3. Ver Networks" << endl;
-    cout << "0. Salir" << endl;
-    cout << "Seleccione una opción: ";
+cout << string(42, '=') << "\n";
+cout << "PRODUCTORA DE CONTENIDO, SISTEMA DE GESTIÓN\n";
+cout << string(42, '=') << "\n";
+cout << "1. Listar creadores ordenados por nombre\n";
+cout << "2. Listar creadores ordenados por alcance\n";
+cout << "3. Listar creadores ordenados por número de rutinas\n";
+cout << "4. Buscar relaciones desde un ID (BFS)\n";
+cout << "5. Ver detalles de un creador\n";
+cout << "6. Ver detalles de una rutina\n";
+cout << "7. Ver detalles de una network\n";
+cout << "8. Añadir nuevo creador\n";
+cout << "9. Eliminar creador\n";
+cout << "0. Salir\n";
+cout << "Opción: ";
 }
 
-// Programa principal
 int main() {
-    vector<Rutina> rutinas;
-    vector<Creador> creadores;
-    vector<Network> networks;
+    GestorContenido gestor;
 
-    cargarRutinas("rutinas.csv", rutinas);
-    cargarNetworks("networks.csv", networks);
-    cargarCreadores("creadores.csv", creadores, rutinas, networks);
+    cout << "Cargando datos desde 'rutinas.csv', 'networks.csv', 'creadores.csv'\n";
 
-    int opcion;
+    if (!gestor.cargarDatos()) {
+        cout << "Error al cargar los datos..\n";
+        return 1; }
+    cout << "Datos cargados exitosamente.\n";
+
+    int opcion; string id;
+
     do {
-        mostrarMenu();
-        cin >> opcion;
-        switch (opcion) {
-        case 1:
-            // Sólo se permite seleccionar orden de Creadores
-            ordenarCreadores(creadores);
-            for (const auto& c : creadores) c.mostrar();
-            break;
-        case 2:
-            for (const auto& r : rutinas) r.mostrar();
-            break;
-        case 3:
-            for (const auto& n : networks) n.mostrar();
-            break;
-        case 0:
-            cout << "Programa finalizado." << endl;
-            break;
-        default:
-            cout << "Opción inválida.\n";
-        }
-    } while (opcion != 0);
+    mostrarMenu(); cin >> opcion; cin.ignore();
 
+    switch (opcion) {
+    case 1: {
+        cout << "\nCreadores ordenados por nombre:\n";
+        auto lista = gestor.obtCreadores_Nombre();
+        for (auto &c : lista) gestor.dsplCreador(c);
+        break;
+    }
+    case 2: {
+        cout << "\nCreadores ordenados por alcance:\n";
+        auto lista = gestor.obtCreadores_Alcance();
+        for (auto &c : lista) gestor.dsplCreador(c);
+        break;
+    }
+    case 3: {
+        cout << "\nCreadores ordenados por número de rutinas:\n";
+        auto lista = gestor.obtCreadores_NRutinas();
+        for (auto &c : lista) gestor.dsplCreador(c);
+        break;
+    }
+    case 4: {
+        cout << "Ingrese ID de Creador, Network o Rutina: ";
+        getline(cin, id);
+        cout << "\nBFS desde " << id << ":\n";
+        auto relaciones = gestor.buscarRelacionesBFS(id);
+        gestor.dsplRelaciones(relaciones);
+        break;
+    }
+    case 5: {
+        cout << "Ingrese ID de creador: ";
+        getline(cin, id);
+        auto c = gestor.getCreador(id);
+        if (c) {
+            cout << "\n--- Detalles del creador ---\n";
+            cout << "Nombre: " << c->nombre << "\n";
+            cout << "ID: " << c->id << "\n";
+            cout << "Alcance: " << c->alcance << "\n";
+            cout << "Rutinas: ";
+            for (size_t i = 0; i < c->rutinas.size(); ++i) {
+                cout << c->rutinas[i] << (i < c->rutinas.size()-1 ? ", " : "\n");
+            }
+            cout << "Networks: ";
+            for (size_t i = 0; i < c->networks.size(); ++i) {
+                cout << c->networks[i] << (i < c->networks.size()-1 ? ", " : "\n");
+            }
+        } else cout << "Creador no encontrado.\n";
+        break;
+    }
+    case 6: {
+        cout << "Ingresa ID de rutina: ";
+        getline(cin, id);
+        auto r = gestor.getRutina(id);
+        if (r) {
+            cout << "\n--- Detalles de la rutina ---\n";
+            cout << "Tipo: " << r->tipo << "\n";
+            cout << "Público: " << r->publico << "\n";
+            cout << "ID: " << r->id << "\n";
+            cout << "Longitud ciclo: " << r->longitud << " meses\n";
+        } else cout << "Rutina no encontrada.\n";
+        break;
+    }
+    case 7: {
+        cout << "Ingresa ID de network: ";
+        getline(cin, id);
+        auto n = gestor.getNetwork(id);
+        if (n) {
+            cout << "\n--- Detalles de la network ---\n";
+            cout << "ID: " << n->id << "\n";
+            cout << "Temática: " << n->tematica << "\n";
+            cout << "Descripción: " << n->descripcion << "\n";
+            cout << "Creadores: ";
+            for (size_t i = 0; i < n->creadores.size(); ++i) {
+                cout << n->creadores[i] << (i < n->creadores.size()-1 ? ", " : "\n");
+            }
+        } else cout << "Network no encontrada.\n";
+        break;
+    }
+    case 8: {
+        string nom, id, entrada; int alc;
+        vector<string> rtns, nwks;
+
+        cout << "\n=== AÑADIR NUEVO CREADOR ===\n";
+        cout << "Nombre: "; getline(cin, nom);
+        cout << "ID único: "; getline(cin, id);
+        cout << "Alcance (número): "; cin >> alc; cin.ignore();
+        cout << "IDs de rutinas (separadas por coma): ";
+
+        getline(cin, entrada);
+        if (!entrada.empty()) {
+            stringstream ss(entrada); string item;
+            while (getline(ss, item, ',')) {
+                if (!item.empty()) rtns.push_back(item);
+            }
+        }
+
+        cout << "IDs de networks (separadas por coma): ";
+
+        getline(cin, entrada);
+        if (!entrada.empty()) {
+            stringstream ss(entrada);
+            string item;
+            while (getline(ss, item, ',')) {
+                if (!item.empty()) nwks.push_back(item);
+            }
+        }
+
+        if (gestor.añadirCreador(nom,id,alc,rtns,nwks)){
+            cout<<"Creador añadido correctamente.\n";}
+        else cout<<"Error: ID OCUPADA'" << id << "'.\n";
+        break;
+    }
+    case 9: {
+        cout << "\n=== ELIMINAR CREADOR ===\n";
+        cout << "ID del creador a eliminar: ";
+        getline(cin, id);
+
+        if (gestor.eliminarCreador(id)) cout<<"Creador eliminado.\n";
+        else cout << "Creador no existente'" << id << "'.\n";
+        break;
+    }
+    case 0:
+        cout << "Saliendo del sistema...\n";
+        break;
+    default: cout << "Opción no válida.\n";
+    }
+} while (opcion != 0);
     return 0;
 }
