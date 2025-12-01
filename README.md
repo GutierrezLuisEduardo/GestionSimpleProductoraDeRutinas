@@ -1,5 +1,17 @@
 ### **SICT0301B: Evalúa los componentes**
 
+### Breve descripción
+Mi proyecto es un gestor simple de `Creadores` para una productora de contenido en RRSS.
+
+La **estructura toral es el gestor**, que se encarga de la carga de los archivos, hacer consultas ordenadas sobre los creadores, añadir y eliminar creadores, así como de montar el grafo: la estructura que utilicé para denotar relaciones. 
+
+Las relaciones denotadas por el grafo toman lugar entre las entidades `Creador`, `Rutina`, y `Network`, y pueden ser accedidas mediante el algoritmo de BFS, que muestra todos los nodos alcanzables, siendo los de hasta arriba los que tienen una conexión directa.
+
+A continuación los headers de los archivos CSV:
+- Creadores: "nombre,id,alcance,rutinas,networks"
+- Rutinas: "Tipo,Público meta,ID de Rutina,Longitud del ciclo de producción"
+- Networks: "id,tematica,descripcion,creadores"
+
 #### 1. Análisis de complejidad correcto y completo para los algoritmos de ordenamiento usados
 
 En el programa se utilizan tres ordenamientos con `std::sort` sobre vectores de objetos `Creador`, los criterios de ordenamiento son el alcance, número de rutinas y nombre del creador.
@@ -14,7 +26,7 @@ En el programa se utilizan tres ordenamientos con `std::sort` sobre vectores de 
 
 | Estructura | Operaciones principales | Complejidad promedio | Complejidad peor caso | Justificación de uso |
 |-|-|-|-|-|
-| `unordered_map<string, X>`| insert, find, erase | **O(1)** | - | Acceso por ID rápido (clave única) |
+| `unordered_map<string, X>`| insert, find, erase | **O(1)** | O(n) | Acceso por ID rápido (clave única) |
 | `vector<string>` (listas adjuntas) | push_back, iteración, remove+erase  | O(1) amortizado / O(n) remove | - | Listas pequeñas-medias de relaciones para el sistema simple que hice y además es compatible con `std::sort`|
 | `queue<string>` (BFS) | push, pop, empty | O(1) | - | Cola FIFO óptima para BFS |
 | `unordered_set<string>` (visitados BFS) | insert, find | O(1) | O(n) |  Búsqueda O(1) de visitados, no permite duplicados, tamaño dinámico |
@@ -33,12 +45,12 @@ En el programa se utilizan tres ordenamientos con `std::sort` sobre vectores de 
 | añadirCreador() | O(C + N) (reescribe archivos completos) |
 | eliminarCreador() | O(C + N) (reescribe archivos completos) |
 
-**Complejidad final del programa (operaciones críticas):**
+**Complejidad final del programa en operaciones principales:**
 - Consultas y búsquedas: O(1) o O(V+E)
 - Ordenamientos: O(C log C)
 - Modificaciones (añadir/eliminar): O(C + N) porque se reescribe el CSV
 
-**Conclusión:** El diseño es eficiente para consultas y recorridos, per se rezaga en términos de modificaciones de csv, con rendimiento lineal.
+**Conclusión:** Diría que el diseño es eficiente para consultas y recorridos, per se rezaga en términos de modificaciones de csv, con rendimiento lineal.
 
 ---
 
