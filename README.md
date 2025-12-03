@@ -28,7 +28,7 @@ En el programa se utilizan tres ordenamientos con `std::sort` sobre vectores de 
 |-|-|-|-|-|
 | `unordered_map<string, X>`| insert, find, erase | **O(1)** | O(n) | Acceso por ID rápido (clave única) |
 | `vector<string>` (listas adjuntas) | push_back, iteración, remove+erase  | O(1) amortizado / O(n) remove | - | Listas pequeñas-medias de relaciones para el sistema simple que hice y además es compatible con `std::sort`|
-| `queue<string>` (BFS) | push, pop, empty | O(V) | - | Cola FIFO óptima para BFS; C/vértice se encola y desencola solamente una vez, en lugar de describir el costo/operación, debí dimensionar el costo por el total de elementos contenidos que puede llegar a ser O(V), por tratarse de BFS |
+| `queue<string>` (BFS) | push, pop, empty | O(1) por operación idividual y O(V) como costo total al ser usada en el BFS | - | Cola FIFO óptima para BFS; C/vértice se encola y desencola solamente una vez, en lugar de describir el costo/operación, debí dimensionar el costo por el total de elementos contenidos que puede llegar a ser O(V), por tratarse de BFS |
 | `unordered_set<string>` (visitados BFS) | insert, find | O(1) | O(n) |  Búsqueda O(1) de visitados, no permite duplicados, tamaño dinámico |
 
 **Conclusión:** Las estructuras elegidas logran consulta en tiempo constante promedio, lo que es ideal para este sistema en particular; En cuanto a la complejidad del BFS, c/vértice se encola/desencola una sola vez y cada arista se examina una sola vez, esto es óptimo para el tipo de recorrido realizado.
